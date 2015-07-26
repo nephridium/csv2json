@@ -12,7 +12,7 @@ parser.add_argument('-I', '--indexlabel', help='Label for index column')
 parser.add_argument('-u', '--usecols', nargs='+', help='List of names of columns to use')
 parser.add_argument('-n', '--names', nargs='+', help='Column names to use')
 parser.add_argument('-a', '--append', nargs='+', help='Names of columns to append')
-parser.add_argument('-p', '--print', action='store_true', help='Print formatted data when done')
+parser.add_argument('-p', '--printdata', action='store_true', help='Print formatted data when done')
 
 args = parser.parse_args()
 infile = args.infile
@@ -45,5 +45,5 @@ if args.usecols is None:
 else:
     df.to_csv(outfile, index=args.index, index_label=args.indexlabel, sep=args.separator, columns=args.usecols)
 
-if args.print:
+if args.printdata:
     print(df)

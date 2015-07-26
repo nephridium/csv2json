@@ -15,7 +15,7 @@ parser.add_argument('-N', '--nrows', type=int, default=None, help='Number of row
 parser.add_argument('-s', '--skiprows', type=int, default=None, help='Number of rows to skip before reading')
 parser.add_argument('-r', '--userows', nargs='+', default=None, help='List of rows to use')
 parser.add_argument('-a', '--append', nargs='+', help='Names of columns to append')
-parser.add_argument('-p', '--print', action='store_true', help='Print formatted data when done')
+parser.add_argument('-p', '--printdata', action='store_true', help='Print formatted data when done')
 
 args = parser.parse_args()
 infile = args.infile
@@ -68,5 +68,5 @@ if args.names is not None:
 
 df.to_json(outfile, orient='records')
 
-if args.print:
+if args.printdata:
     print(df)
