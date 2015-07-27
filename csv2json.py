@@ -18,7 +18,12 @@ parser.add_argument('-a', '--append', nargs='+', help='Names of columns to appen
 parser.add_argument('-p', '--printdata', action='store_true', help='Print formatted data when done')
 
 args = parser.parse_args()
+
 infile = args.infile
+if not os.path.isfile(infile):
+    print('File "%s" does not exist, aborting. Use --help to show command syntax and command line options.' % infile)
+    exit()
+
 outfile = args.outfile
 if outfile is None:
     outfile = os.path.splitext(infile)[0] + '.json'
@@ -31,18 +36,27 @@ if args.usecols is not None:
 
 import pandas as pd
 if args.usecols is None:
-    df = pd.read_csv(
-        infile, sep=args.separator, header=args.headerline,
-        nrows=args.nrows, skiprows=args.skiprows,
-        engine='python'
-    )
+    try:
+        df = pd.read_csv(
+            infile, sep=args.separator, header=args.headerline,
+            nrows=args.nrows, skiprows=args.skiprows,
+            engine='python'
+        )
+    except Exception:
+        print('Could not read CSV data from "%s":\n' % infile)
+        raise
+
 else:
-    df = pd.read_csv(
-        infile, sep=args.separator, header=args.headerline,
-        usecols=args.usecols,
-        nrows=args.nrows, skiprows=args.skiprows,
-        engine='python'
-    )
+    try:
+        df = pd.read_csv(
+            infile, sep=args.separator, header=args.headerline,
+            usecols=args.usecols,
+            nrows=args.nrows, skiprows=args.skiprows,
+            engine='python'
+        )
+    except Exception:
+        print('Could not read CSV data from "%s":\n' % infile)
+        raise
 
 # crop columns
 if args.columns:

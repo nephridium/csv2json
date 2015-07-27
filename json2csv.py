@@ -15,7 +15,12 @@ parser.add_argument('-a', '--append', nargs='+', help='Names of columns to appen
 parser.add_argument('-p', '--printdata', action='store_true', help='Print formatted data when done')
 
 args = parser.parse_args()
+
 infile = args.infile
+if not os.path.isfile(infile):
+    print('File "%s" does not exist, aborting. Use --help to show command syntax and command line options.' % infile)
+    exit()
+
 outfile = args.outfile
 if outfile is None:
     outfile = os.path.splitext(infile)[0] + '.csv'
@@ -27,7 +32,11 @@ if args.usecols is not None:
 
 
 import pandas as pd
-df = pd.read_json(infile)
+try:
+    df = pd.read_json(infile)
+except ValueError:
+    print('Could not read JSON data from "%s":\n' % infile)
+    raise
 
 # Append columns if given
 if args.append is not None:
